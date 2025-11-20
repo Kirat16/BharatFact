@@ -9,7 +9,7 @@ langdetect==1.0.9
 regex==2024.5.15
 openpyxl==3.1.5
 transformers==4.45.2
-torch==2.4.1
+torch==2.5.1
 accelerate==1.0.1
 datasets==2.19.0
 evaluate==0.4.2
