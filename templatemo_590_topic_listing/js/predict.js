@@ -1,5 +1,5 @@
 (function(){
-  const API_BASE = 'http://localhost:8001';
+  const API_BASE = 'https://bharatfact-1.onrender.com';
   const form = document.getElementById('predict-form');
   const textarea = document.getElementById('news-text');
   const resultCard = document.getElementById('result-card');
