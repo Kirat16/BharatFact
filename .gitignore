@@ -1,0 +1,14 @@
+"data/" 
+"data/" 
+".venv"
+"__pycache__"
+
+.data/ 
+.data/ 
+.venv
+.__pycache__
+
+data/ 
+data/ 
+.venv
+__pycache__

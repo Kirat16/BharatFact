@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="Detect fake news with AI-powered analysis">
+        <meta name="author" content="">
+
+        <title>BharatFact - Fake News Detector</title>
+
+        <!-- CSS FILES -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+                        
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="css/templatemo-topic-listing.css" rel="stylesheet">
+
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+        <style>
+            .detection-section {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 60px 0;
+      color: white;
+            }
+
+            .input-section {
+                background: white;
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
+            }
+
+            .result-section {
+                background: white;
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                display: none;
+                margin-bottom: 30px;
+            }
+
+            .result-section.show {
+                display: block;
+            }
+
+            .result-badge {
+                font-size: 2rem;
+                font-weight: bold;
+                padding: 20px;
+                border-radius: 15px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .result-badge.real {
+                background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                color: white;
+            }
+
+            .result-badge.fake {
+                background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+                color: white;
+            }
+
+            .accuracy-score {
+                font-size: 3rem;
+                font-weight: bold;
+                color: #667eea;
+      text-align: center;
+                margin: 20px 0;
+            }
+
+            .confidence-bar {
+                height: 30px;
+                border-radius: 15px;
+                background: #e9ecef;
+                overflow: hidden;
+                margin: 20px 0;
+            }
+
+            .confidence-fill {
+                height: 100%;
+                transition: width 0.5s ease;
+      display: flex;
+                align-items: center;
+      justify-content: center;
+      color: white;
+                font-weight: bold;
+            }
+
+            .confidence-fill.real {
+                background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            }
+
+            .confidence-fill.fake {
+                background: linear-gradient(90deg, #eb3349 0%, #f45c43 100%);
+            }
+
+            .chart-container {
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+                margin-top: 30px;
+            }
+
+            .loading-spinner {
+                display: none;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .loading-spinner.show {
+      display: block;
+    }
+
+            textarea.form-control {
+                min-height: 150px;
+                resize: vertical;
+            }
+
+            .detect-btn {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border: none;
+      color: white;
+                padding: 15px 40px;
+                font-size: 1.1rem;
+                font-weight: 600;
+                border-radius: 50px;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .detect-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      color: white;
+    }
+
+            .detect-btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+            .info-card {
+                background: #f8f9fa;
+                border-radius: 15px;
+                padding: 20px;
+                margin-top: 20px;
+    }
+  </style>
+</head>
+    
+    <body id="top">
+
+        <main>
+
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="index.html">
+                        <i class="bi-back"></i>
+                        <span>BharatFact</span>
+                    </a>
+
+                    <div class="d-lg-none ms-auto me-4">
+                        <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
+                    </div>
+    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link active" href="predict.html">Detect News</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">About Us</a>
+                            </li>
+    
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html#section_3">How it works</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html#section_4">FAQs</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Contact</a>
+                            </li>
+                        </ul>
+
+                        <div class="d-none d-lg-block">
+                            <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
+                        </div>
+                    </div>
+      </div>
+      </nav>
+
+            <section class="detection-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-center mb-5">
+                            <h1 class="text-white mb-3">Fake News Detection</h1>
+                            <p class="lead text-white">Enter the news article or headline below to get instant analysis</p>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-10">
+                            <!-- Input Section -->
+                            <div class="input-section">
+                                <h3 class="mb-4">Enter News Text</h3>
+                                <form id="detect-form">
+                                    <div class="mb-3">
+                                        <label for="news-text" class="form-label">News Article or Headline</label>
+                                        <textarea class="form-control" id="news-text" rows="6" placeholder="Paste the news article, headline, or text you want to verify here..."></textarea>
+                                        <div class="form-text">Supports both English and Hindi text</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn detect-btn" id="detect-btn">
+                                            <i class="bi-search me-2"></i>Detect Fake News
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="loading-spinner" id="loading-spinner">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Analyzing...</span>
+                                    </div>
+                                    <p class="mt-3">Analyzing your news article...</p>
+                                </div>
+                            </div>
+
+                            <!-- Result Section -->
+                            <div class="result-section" id="result-section">
+                                <h3 class="mb-4">Detection Results</h3>
+                                
+                                <div class="result-badge" id="result-badge">
+                                    <span id="result-label">-</span>
+                                </div>
+
+                                <div class="text-center">
+                                    <div class="accuracy-score" id="accuracy-score">0%</div>
+                                    <p class="text-muted">Accuracy Score</p>
+    </div>
+
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidence-fill" style="width: 0%;">
+                                        <span id="confidence-text">0%</span>
+                                    </div>
+    </div>
+
+                                <div class="info-card">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>Language Detected:</strong> <span id="detected-lang">-</span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Confidence Level:</strong> <span id="confidence-level">-</span></p>
+        </div>
+        </div>
+      </div>
+
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-outline-primary" id="analyze-again-btn">
+                                        <i class="bi-arrow-clockwise me-2"></i>Analyze Another Article
+                                    </button>
+        </div>
+          </div>
+
+                            <!-- Distribution Graph Section -->
+                            <div class="chart-container" id="chart-container" style="display: none;">
+                                <h4 class="mb-4">Fake vs Real Distribution</h4>
+                                <canvas id="distributionChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+            </section>
+
+        </main>
+
+        <footer class="site-footer section-padding">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 col-12 mb-4 pb-2">
+                        <a class="navbar-brand mb-2" href="index.html">
+                            <i class="bi-back"></i>
+                            <span>BharatFact</span>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <h6 class="site-footer-title mb-3">Resources</h6>
+
+                        <ul class="site-footer-links">
+                            <li class="site-footer-link-item">
+                                <a href="index.html" class="site-footer-link">Home</a>
+                            </li>
+
+                            <li class="site-footer-link-item">
+                                <a href="predict.html" class="site-footer-link">Detect News</a>
+                            </li>
+
+                            <li class="site-footer-link-item">
+                                <a href="about.html" class="site-footer-link">About Us</a>
+                            </li>
+
+                            <li class="site-footer-link-item">
+                                <a href="contact.html" class="site-footer-link">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-4 col-6 mb-4 mb-lg-0">
+                        <h6 class="site-footer-title mb-3">Information</h6>
+
+                        <p class="text-white d-flex mb-1">
+                            <a href="mailto:info@fakenewsdetect.com" class="site-footer-link">
+                                info@fakenewsdetect.com
+                            </a>
+                        </p>
+    </div>
+
+                    <div class="col-lg-3 col-md-4 col-12 mt-4 mt-lg-0 ms-auto">
+                        <p class="copyright-text mt-lg-5 mt-4">Copyright © 2024 Fake News Detector. All rights reserved.
+                        <br><br>Helping you verify news and stay informed.</p>
+  </div>
+
+                </div>
+            </div>
+        </footer>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/custom.js"></script>
+
+  <script>
+    (function(){
+      const API_BASE = 'http://localhost:8001';
+      // Optional URL threshold override, e.g., predict.html?th=0.85
+      const pageParams = new URLSearchParams(window.location.search);
+      const TH_PARAM = pageParams.get('th');
+                const form = document.getElementById('detect-form');
+                const textarea = document.getElementById('news-text');
+                const detectBtn = document.getElementById('detect-btn');
+                const loadingSpinner = document.getElementById('loading-spinner');
+                const resultSection = document.getElementById('result-section');
+                const resultBadge = document.getElementById('result-badge');
+                const resultLabel = document.getElementById('result-label');
+                const accuracyScore = document.getElementById('accuracy-score');
+                const confidenceFill = document.getElementById('confidence-fill');
+                const confidenceText = document.getElementById('confidence-text');
+                const detectedLang = document.getElementById('detected-lang');
+                const confidenceLevel = document.getElementById('confidence-level');
+                const chartContainer = document.getElementById('chart-container');
+                const analyzeAgainBtn = document.getElementById('analyze-again-btn');
+                
+                let distributionChart = null;
+
+                // Check for URL parameter (from index.html search)
+                const urlParams = new URLSearchParams(window.location.search);
+                const keyword = urlParams.get('keyword');
+                if (keyword) {
+                    textarea.value = keyword;
+                }
+
+                function detectLang(text) {
+                    return /[\u0900-\u097F]/.test(text) ? 'Hindi' : 'English';
+                }
+
+                function getConfidenceLevel(conf) {
+                    if (conf >= 0.9) return 'Very High';
+                    if (conf >= 0.75) return 'High';
+                    if (conf >= 0.6) return 'Moderate';
+                    return 'Low';
+                }
+
+                async function predict(text) {
+                    const endpoint = API_BASE + '/predict' + (TH_PARAM ? ('?th=' + encodeURIComponent(String(TH_PARAM))) : '');
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+                    if (!response.ok) {
+                        let detail = '';
+                        try { detail = await response.text(); } catch(e){}
+                        throw new Error(detail || ('HTTP ' + response.status));
+                    }
+                    return await response.json();
+                }
+
+                function showResult(data, lang) {
+                    const isFake = String(data.label).toLowerCase().includes('fake');
+                    const confidence = data.confidence || 0;
+                    const confidencePercent = Math.round(confidence * 100);
+
+                    // Update result badge
+                    resultBadge.className = 'result-badge ' + (isFake ? 'fake' : 'real');
+                    resultLabel.textContent = isFake ? 'FAKE NEWS' : 'REAL NEWS';
+
+                    // Update accuracy score
+                    accuracyScore.textContent = confidencePercent + '%';
+                    accuracyScore.style.color = isFake ? '#eb3349' : '#11998e';
+
+                    // Update confidence bar
+                    confidenceFill.className = 'confidence-fill ' + (isFake ? 'fake' : 'real');
+                    confidenceFill.style.width = confidencePercent + '%';
+                    confidenceText.textContent = confidencePercent + '%';
+
+                    // Update info
+                    detectedLang.textContent = lang;
+                    confidenceLevel.textContent = getConfidenceLevel(confidence);
+
+                    // Show result section
+                    resultSection.classList.add('show');
+
+                    // Update distribution chart
+                    updateDistributionChart(isFake, confidence);
+                }
+
+                function updateDistributionChart(isFake, confidence) {
+                    const fakePercent = isFake ? Math.round(confidence * 100) : Math.round((1 - confidence) * 100);
+                    const realPercent = 100 - fakePercent;
+
+                    if (distributionChart) {
+                        distributionChart.destroy();
+                    }
+
+                    const ctx = document.getElementById('distributionChart').getContext('2d');
+                    distributionChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Real News', 'Fake News'],
+                            datasets: [{
+                                data: [realPercent, fakePercent],
+                                backgroundColor: [
+                                    'rgba(17, 153, 142, 0.8)',
+                                    'rgba(235, 52, 73, 0.8)'
+                                ],
+                                borderColor: [
+                                    'rgba(17, 153, 142, 1)',
+                                    'rgba(235, 52, 73, 1)'
+                                ],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 20,
+                                        font: {
+                                            size: 14
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.label + ': ' + context.parsed + '%';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    chartContainer.style.display = 'block';
+                }
+
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const text = (textarea.value || '').trim();
+                    if (!text) {
+                        alert('Please enter some news text to analyze.');
+                        return;
+                    }
+
+                    // Show loading
+                    detectBtn.disabled = true;
+                    loadingSpinner.classList.add('show');
+                    resultSection.classList.remove('show');
+                    chartContainer.style.display = 'none';
+
+                    try {
+        const lang = detectLang(text);
+                        const data = await predict(text);
+                        showResult(data, lang);
+                    } catch (error) {
+                        alert('Error: ' + (error.message || 'Failed to analyze. Make sure the backend server is running.'));
+                        console.error(error);
+                    } finally {
+                        detectBtn.disabled = false;
+                        loadingSpinner.classList.remove('show');
+                    }
+                });
+
+                analyzeAgainBtn.addEventListener('click', function() {
+                    textarea.value = '';
+                    resultSection.classList.remove('show');
+                    chartContainer.style.display = 'none';
+                    if (distributionChart) {
+                        distributionChart.destroy();
+                        distributionChart = null;
+                    }
+                    textarea.focus();
+                });
+    })();
+  </script>
+
+</body>
+</html>

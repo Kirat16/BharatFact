@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Fake News Detector</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: "Inter", sans-serif;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 120px 0;
+            background: linear-gradient(135deg, #4c6ef5, #15aabf);
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* CONTENT SECTIONS */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section h2 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        /* CARD STYLE */
+        .custom-card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+            transition: 0.3s;
+        }
+
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .custom-card img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        /* TEAM + GUIDANCE SECTION FIX */
+        .team-guidance-section {
+            margin-bottom: 80px;
+        }
+
+        /* WHAT WE DO */
+        .what-we-do-card {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            transition: 0.3s;
+        }
+
+        .what-we-do-card:hover {
+            transform: translateY(-5px);
+        }
+        /* Navbar base */
+.navbar {
+  background: transparent;
+  padding: 1rem 2rem;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  z-index: 1030;
+}
+
+/* Brand styling */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  color: black !important;
+}
+.navbar-brand svg {
+  fill: black;
+}
+
+/* Nav links styling */
+.navbar-nav {
+  display: flex;
+  gap: 2rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.navbar-nav .nav-link {
+  color: #4a6785;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #1f3c88;
+  font-weight: 700;
+}
+
+/* Profile icon circle (desktop) */
+.profile-icon {
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-icon:hover {
+  background-color: #e0f2ff;
+}
+
+.profile-icon i {
+  color: #1f3c88;
+}
+
+/* Profile icon circle (mobile) */
+.profile-icon-mobile {
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-icon-mobile:hover {
+  background-color: #e0f2ff;
+}
+
+/* Toggler icon default Bootstrap styling is fine */
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Brand Logo + Text -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <!-- Simple icon (rectangle block) -->
+                <svg width="24" height="24" fill="black" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="16" height="16" rx="2" ry="2" />
+                </svg>
+                <span class="fw-bold" style="font-size: 1.3rem; color: black;">FakeNewsDetect</span>
+            </a>
+    
+            <!-- Mobile user icon visible only on small screens -->
+            <div class="d-lg-none ms-auto me-3">
+                <a href="#profile" class="profile-icon-mobile d-flex justify-content-center align-items-center">
+                    <i class="bi bi-person" style="font-size: 1.2rem; color: #1f3c88;"></i>
+                </a>
+            </div>
+    
+            <!-- Toggler button for mobile menu -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- Nav Links -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav gap-4 text-uppercase fw-semibold" style="font-size: 0.9rem;">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="predict.html">Detect News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#section_3">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#section_4">FAQs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+    
+            <!-- Desktop user profile icon on right -->
+            <div class="d-none d-lg-flex ms-auto">
+                <a href="#profile" class="profile-icon d-flex justify-content-center align-items-center">
+                    <i class="bi bi-person" style="font-size: 1.3rem; color: #1f3c88;"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h1>About Us</h1>
+            <p>This Fake News Detection System is a Minor Project developed by BCA 5th Semester students (Group 17) of
+                JIMS Vasant Kunj. The system uses Machine Learning to analyze news text and classify it as real or fake.
+            </p>
+        </div>
+    </section>
+
+    <!-- TEAM + GUIDANCE SECTION -->
+    <section class="section team-guidance-section">
+        <div class="container">
+            <div class="row g-4 justify-content-center align-items-start">
+                <!-- Team Members -->
+                <div class="col-md-5">
+                    <div class="custom-card text-center" style="padding: 40px 30px; border-radius: 20px;">
+                        <h4 class="fw-bold mb-4"
+                            style="font-size: 1.6rem; display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <span style="color:#1c7ed6; font-size:1.8rem;">👥</span> Team Members
+                        </h4>
+
+                        <div class="p-3 mb-3" style="background:#f1f3f5; border-radius:12px; text-align:left;">
+                            <strong>Devansh Rathi</strong><br>
+                            <small>Roll No: 05414202023</small>
+                        </div>
+
+                        <div class="p-3 mb-3" style="background:#f1f3f5; border-radius:12px; text-align:left;">
+                            <strong>Kirat Awasthi</strong><br>
+                            <small>Roll No: 04814202023</small>
+                        </div>
+
+                        <div class="p-3" style="background:#f1f3f5; border-radius:12px; text-align:left;">
+                            <strong>Gurnoor Kaur Pawan</strong><br>
+                            <small>Roll No: 03914202023</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Under Guidance -->
+                <div class="col-md-5">
+                    <div class="custom-card text-center" style="padding: 40px 30px; border-radius: 20px;">
+                        <h4 class="fw-bold mb-4"
+                            style="font-size:1.6rem; display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <span style="color:#1971c2; font-size:1.8rem;">🔒</span> Under the Guidance of
+                        </h4>
+
+                        <div style="font-size:3rem; margin-bottom:10px;">🎓</div>
+                        <h5 class="fw-bold mb-1">Mr. Deepak Sharma</h5>
+                        <p class="text-muted mb-0">Project Guide</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+</body>
+
+</html>
