@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = "http://localhost:8001";
+  const API_BASE = "https://bharatfact-1.onrender.com";
   // Optional threshold override via page URL: ?th=0.65
   const urlParams = new URLSearchParams(window.location.search);
   const TH_PARAM = urlParams.get("th");
